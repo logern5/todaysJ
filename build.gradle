@@ -1,0 +1,28 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+sourceSets.main.java.srcDirs = ['src']
+
+mainClassName = 'todaysJ.Main'
+
+repositories {
+   mavenCentral()
+}
+
+dependencies {
+   compile 'com.google.code.gson:gson:2.2.4'
+}
+
+jar {
+   baseName = 'todaysJ'
+}
+
+task fullJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'todaysJ.Main','Class-Path': '.'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
